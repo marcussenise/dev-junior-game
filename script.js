@@ -12,10 +12,8 @@ let pontos = 0;
 let projetos = 0;
 var supportsTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 
-function handleKeyUp(event){
-    console.log(event);
+function handleKeyDown(event){
     if(event.keyCode === 32){
-        event.preventDefault();
         if(!isJumping){
             jump();
         }
@@ -70,7 +68,7 @@ function createbug(){
         if(bugPosition < -0){
             clearInterval(leftInterval);
             background.removeChild(newBug);
-        } else if(bugPosition > 0 && bugPosition < 5 && position < 60){
+        } else if(bugPosition > 0 && bugPosition < 4.8 && position < 60){
             //game over
             background.removeChild(newBug);
             clearInterval(leftInterval);
@@ -79,7 +77,7 @@ function createbug(){
             document.body.innerHTML = '<h1 class="game-over">Fim de jogo</h1><h3 class="resultado">'+pontos+' dias de experiência</h3><h4 class="mensagem"></h4><h2 class="restart" onclick="restart()">Restart<h2>';
             const mensagem = document.querySelector('.mensagem');
             isGameOver = true;
-            document.removeEventListener('keyup', handleKeyUp);  
+            document.removeEventListener('keydown', handleKeyDown);  
             
             if(pontos<365 && projetos<10){
                 mensagem.innerHTML = '"Júnior com menos de 1 ano de experiência e nada no Github? Guardaremos seu currículo para a próxima..."'
@@ -96,7 +94,7 @@ function createbug(){
         }
     }, 20);
 
-    const criarbug = setTimeout(createbug, randomTime);
+    const criarbug = setTimeout(createbug, randomTime+100);
 }
 
 function createGithub(){
@@ -180,9 +178,9 @@ function restart(){
     const char = document.querySelector('.char');
     const background = document.querySelector('.background');
     background.style.display = 'block';
+    background.addEventListener('click', jump);
     char.style.display = 'block';
-    document.addEventListener('keyup', handleKeyUp);
-    document.addEventListener('touchstart', handleKeyUp);
+    document.addEventListener('keydown', handleKeyDown);
     
     const placar = document.createElement('h4');
     placar.classList.add('placar');
@@ -205,7 +203,7 @@ function play(){
     background.style.display = 'block';
     char.style.display = 'block';
     createbug();
-    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('keydown', handleKeyDown);
     runScore();
     runProjetos();
     createGithub();

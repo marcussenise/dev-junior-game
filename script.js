@@ -49,6 +49,7 @@ function jump(){
 
 function createbug(){
     if(isGameOver) return;
+    console.log('criandobug');
 
     const background = document.querySelector('.background');
     let newBug = document.createElement('img');
@@ -58,8 +59,6 @@ function createbug(){
     let bugPosition = 95;
     let randomTime = Math.random() * 6000;
     
-    
-    // bug.classList.add('bug');
     newBug.style.left = 95+'%';
     background.appendChild(newBug);
     
@@ -72,7 +71,7 @@ function createbug(){
             clearInterval(leftInterval);
             bugPosition = -1;
             document.body.innerHTML = '<h1 class="game-over">Fim de jogo</h1><h3 class="resultado">'+pontos+' dias de experiência</h3><h4 class="mensagem"></h4><h2 class="restart" onclick="restart()">Restart<h2>';
-            // clearTimeout(criarbug);
+            clearTimeout(criarbug);
             background.removeChild(newBug);
             newBug.classList.remove('bug');
             const mensagem = document.querySelector('.mensagem');

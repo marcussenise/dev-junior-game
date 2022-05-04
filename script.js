@@ -10,7 +10,6 @@ let isGameOver = false;
 let position = 0;
 let pontos = 0;
 let projetos = 0;
-var supportsTouch = 'ontouchstart' in window || navigator.msMaxTouchPoints;
 
 function handleKeyDown(event){
     if(event.keyCode === 32){
@@ -65,16 +64,17 @@ function createbug(){
     background.appendChild(newBug);
     
     let leftInterval = setInterval(() => {
-        if(bugPosition < -0){
+        if(bugPosition <= 0){
             clearInterval(leftInterval);
             background.removeChild(newBug);
         } else if(bugPosition > 0 && bugPosition < 4.8 && position < 60){
             //game over
-            background.removeChild(newBug);
             clearInterval(leftInterval);
-            clearTimeout(criarbug);
-            if(isGameOver) return;
+            bugPosition = -1;
             document.body.innerHTML = '<h1 class="game-over">Fim de jogo</h1><h3 class="resultado">'+pontos+' dias de experiência</h3><h4 class="mensagem"></h4><h2 class="restart" onclick="restart()">Restart<h2>';
+            // clearTimeout(criarbug);
+            background.removeChild(newBug);
+            newBug.classList.remove('bug');
             const mensagem = document.querySelector('.mensagem');
             isGameOver = true;
             document.removeEventListener('keydown', handleKeyDown);  
@@ -88,9 +88,12 @@ function createbug(){
             } else if(pontos<365 && projetos>= 10){
                 mensagem.innerHTML = 'Muitos projetos legais, mas falta experiência! Júnior na nossa empresa só com experiência!'
             }
-        } else{
+            return;
+        } else if(isGameOver != true){
             bugPosition -=1.2;
             newBug.style.left = bugPosition+'%';
+        } else{
+            clearInterval(leftInterval);
         }
     }, 20);
 
